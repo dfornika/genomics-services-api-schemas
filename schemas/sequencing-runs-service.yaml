@@ -1,0 +1,499 @@
+openapi: 3.1.0
+info:
+  title: Sequencing Runs Service
+  description: |-
+    Provide info about sequencing runs
+  contact:
+    email: dan.fornika@bccdc.ca
+  license:
+    name: GNU Affero General Public License v3.0
+    url: "https://www.gnu.org/licenses/agpl-3.0.txt"
+  version: 0.1.0
+tags:
+  - name: sequencing-instruments
+    description: Info about sequencing instruments
+  - name: sequencing-runs
+    description: Info about sequencing runs
+  - name: sequenced-libraries
+    description: Info about sequenced libraries
+paths:
+  /sequencing-instruments/illumina:
+    get:
+      tags:
+        - sequencing-instruments
+      summary: Get a list of illumina sequencing instruments
+      description: Get a list of illumina sequencing instruments
+      operationId: getSequencingInstrumentIlluminaList
+      parameters:
+        - name: sort
+          schema:
+            type: string
+        - name: page
+          schema:
+            type: string
+        - name: filter
+          schema:
+            type: string
+    post:
+      tags:
+        - sequencing-instruments
+      summary: Add a new illumina sequencing instrument
+      operationId: addSequencingInstrumentIllumina
+  /sequencing-instruments/illumina/{instrumentId}:
+    get:
+      tags:
+        - sequencing-instruments
+      summary: Get an illumina sequencing instrument by ID
+      description: Get an illumina sequencing instrument by ID
+      operationId: getSequencingInstrumentIllumina
+    delete:
+      tags:
+        - sequencing-instruments
+      summary: Delete an illumina sequencing instrument
+      operationId: deleteSequencingInstrumentIllumina
+  /sequencing-instruments/nanopore:
+    get:
+      tags:
+        - sequencing-instruments
+      summary: Get a list of nanopore sequencing instruments
+      description: Get a list of nanopore sequencing instruments
+      operationId: getSequencingInstrumentNanoporeList
+      parameters:
+        - name: sort
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: string
+        - name: filter
+          in: query
+          schema:
+            type: string
+    post:
+      tags:
+        - sequencing-instruments
+      summary: Add a new nanopore sequencing instrument
+      operationId: addSequencingInstrumentNanopore
+  /sequencing-instruments/nanopore/{instrumentId}:
+    get:
+      tags:
+        - sequencing-instruments
+      summary: Get a nanopore sequencing instrument by ID
+      description: Get a nanopore sequencing instrument by ID
+      operationId: getSequencingInstrumentNanopore
+    delete:
+      tags:
+        - sequencing-instruments
+      summary: Delete a nanopore sequencing instrument
+      operationId: deleteSequencingInstrumentNanopore
+  /sequencing-runs/illumina:
+    get:
+      tags:
+        - sequencing-runs
+      summary: Get a list of illumina sequencing runs
+      description: Get a list of illumina sequencing runs
+      operationId: getSequencingRunIlluminaList
+      parameters:
+        - name: sort
+          in: query
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: string
+        - name: filter
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SequencingRunIlluminaJSONArray'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/SequencingRunIlluminaJSONAPIArray'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerErrorJSONArray'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ServerErrorJSONAPIArray'
+      security:
+        - oauth2:
+            - read:sequencingrun
+    post:
+      tags:
+        - sequencing-runs
+      summary: Add a new illumina sequencing run
+      description: Add a new illumina sequencing run
+      operationId: addSequencingRunIllumina
+      requestBody:
+        description: Add a new illumina sequencing run
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SequencingRunIlluminaJSON'
+          application/vnd.api+json:
+            schema:
+              $ref: '#/components/schemas/SequencingRunIlluminaJSONAPI'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SequencingRunIlluminaJSON'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/SequencingRunIlluminaJSONAPI'
+      security:
+        - oauth2:
+            - write:sequencingrun
+            - read:sequencingrun
+  /sequencing-runs/illumina/{sequencingRunId}:
+    get:
+      tags:
+        - sequencing-runs
+      summary: Get an illumina sequencing run by ID
+      operationId: getSequencingRunIlluminaById
+      security:
+        - oauth2:
+            - read:sequencingrun
+    delete:
+      tags:
+        - sequencing-runs
+      summary: Delete an illumina sequencing run
+      security:
+        - oauth2:
+            - write:sequencingrun
+            - read:sequencingrun
+  /sequencing-runs/illumina/{sequencingRunId}/demultiplexings:
+    get:
+      tags:
+        - sequencing-runs
+      summary: Get a list of demultiplexings for an illumina sequencing run
+      security:
+        - oauth2:
+            - read:sequencingrun
+    post:
+      tags:
+        - sequencing-runs
+      summary: Add a demultiplexing to an illumina sequencing run
+      security:
+        - oauth2:
+            - write:sequencingrun
+            - read:sequencingrun
+  /sequencing-runs/illumina/{sequencingRunId}/demultiplexings/{demultiplexingId}:
+    get:
+      tags:
+        - sequencing-runs
+      summary: Get a demultiplexing of an illumina sequencing run
+      security:
+        - oauth2:
+            - read:sequencingrun
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SequencingRunIlluminaDemultiplexingJSON'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/SequencingRunIlluminaDemultiplexingJSONAPI'
+    delete:
+      tags:
+        - sequencing-runs
+      summary: Delete a demultiplexing of an illumina sequencing run
+      security:
+        - oauth2:
+            - write:sequencingrun
+            - read:sequencingrun
+  /sequencing-runs/nanopore:
+    get:
+      tags:
+        - sequencing-runs
+      summary: Get a list of nanopore sequencing runs
+      description: Get a list of nanopore sequencing runs
+      operationId: getSequencingRunNanoporeList
+      parameters:
+        - name: sort
+          schema:
+            type: string
+        - name: page
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SequencingRunNanoporeJSON'
+            application/vnd.api+json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SequencingRunNanoporeJSONAPI'
+      security:
+        - oauth2:
+            - read:sequencingrun
+    post:
+      tags:
+        - sequencing-runs
+      summary: Add a new nanopore sequencing run
+  /sequencing-runs/nanopore/{sequencingRunId}:
+    get:
+      tags:
+        - sequencing-runs
+      summary: Get a nanopore sequencing run by ID
+    delete:
+      tags:
+        - sequencing-runs
+      summary: Delete a nanopore sequencing run
+  /sequenced-libraries:
+    get:
+      tags:
+        - sequenced-libraries
+      operationId: getSequencedLibraries
+      parameters:
+        - name: libraryId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: instrumentType
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+components:
+  schemas:
+    SequencingRunIlluminaJSON:
+      type: object
+      properties:
+        id:
+          type: string
+        instrument_type:
+          type: string
+        instrument_id:
+          type: string
+        run_date:
+          type: string
+          format: date
+        experiment_id:
+          type: string
+        timestamp_sequencing_start:
+          type: string
+          format: date-time
+        timestamp_sequencing_complete:
+          type: string
+          format: date-time
+    SequencingRunIlluminaJSONArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/SequencingRunIlluminaJSON'
+    SequencingRunIlluminaJSONAPI:
+      type: object
+      properties:
+        id:
+          type: string
+          pattern: '\d{6}_[A-Z0-9]+_[A-Z0-9-]+$'
+        type:
+          type: string
+        attributes:
+          type: object
+          properties:
+            instrument_type:
+              type: string
+            instrument_id:
+              type: string
+            run_date:
+              type: string
+              format: date
+            experiment_id:
+              type: string
+            timestamp_sequencing_start:
+              type: string
+              format: date-time
+            timestamp_sequencing_complete:
+                  type: string
+                  format: date-time
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              format: uri
+            related:
+              type: object
+              properties:
+                demultiplexings:
+                  type: string
+                  format: uri
+    SequencingRunIlluminaJSONAPIArray:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SequencingRunIlluminaJSONAPI'
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              format: uri
+            first:
+              type: string
+              format: uri
+            last:
+              type: string
+              format: uri
+            prev:
+              type: string
+              format: uri
+            next:
+              type: string
+              format: uri
+    SequencingRunIlluminaDemultiplexingJSON:
+      type: object
+      properties:
+        id:
+          type: string
+    SequencingRunIlluminaDemultiplexingJSONAPI:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+          properties:
+            date:
+              type: string
+              format: date
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              format: uri
+            related:
+              type: object
+              properties:
+                sequencing_run:
+                  type: string
+                  format: uri
+                sequenced_libraries:
+                  type: string
+                  format: uri
+    SequencedLibraryIlluminaJSON:
+      type: object
+      properties:
+        id:
+          type: string
+    SequencedLibraryIlluminaJSONAPI:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            type:
+              type: string
+    SequencingRunNanoporeJSON:
+      type: object
+      properties:
+        id:
+          type: string
+          examples:
+    SequencingRunNanoporeJSONAPI:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            type:
+              type: string
+    ApiResponseObject:
+      type: object
+      properties:
+        data:
+          type: object
+    ApiResponseArray:
+      type: object
+      properties:
+        data:
+          type: array
+    ServerErrorJSON:
+      type: object
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+    ServerErrorJSONArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/ServerErrorJSON'
+    ServerErrorJSONAPI:
+      type: object
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+    ServerErrorJSONAPIArray:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServerErrorJSONAPI'
+  requestBodies:
+    SequencingRunIllumina:
+      description: Illumina sequencing run object that needs to be added
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SequencingRunIlluminaJSON'
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/SequencingRunIlluminaJSONAPI'
+  
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://lnxgeno01.phsabc.ehcnet.ca/keycloak/oauth/authorize
+          scopes:
+            write:sequencingrun: modify sequencing runs
+            read:sequencingrun: read sequencing runs
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header

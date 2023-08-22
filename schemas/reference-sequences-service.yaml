@@ -1,0 +1,161 @@
+openapi: 3.1.0
+info:
+  title: Reference Sequences Service
+  description: |-
+    Provide info about reference sequences
+  contact:
+    email: dan.fornika@bccdc.ca
+  license:
+    name: GNU Affero General Public License v3.0
+    url: "https://www.gnu.org/licenses/agpl-3.0.txt"
+  version: 0.1.0
+tags:
+  - name: reference-genomes
+    description: Info about reference genomes
+  - name: reference-plasmids
+    description: Info about reference sequences for targeted regions
+  - name: targeted-sequences
+    description: Info about sequenced libraries
+paths:
+  /reference-genomes:
+    get:
+      tags:
+        - reference-genomes
+      summary: Get a list of reference genomes
+      description: Get a list of reference genomes
+      operationId: getReferenceGenomeList
+      parameters:
+        - name: sort
+          schema:
+            type: string
+        - name: page
+          schema:
+            type: string
+        - name: filter
+          schema:
+            type: string
+    post:
+      tags:
+        - reference-genomes
+      summary: Add a new reference genome
+      operationId: addReferenceGenome
+  /reference-genomes/{referenceGenomeId}:
+    get:
+      tags:
+        - reference-genomes
+      summary: Get a reference genome by ID
+      description: Get a reference genome by ID
+      operationId: getReferenceGenome
+    delete:
+      tags:
+        - sequencing-instruments
+      summary: Delete an illumina sequencing instrument
+      operationId: deleteSequencingInstrumentIllumina
+components:
+  schemas:
+    ReferenceGenomeJSON:
+      type: object
+      properties:
+        id:
+          type: string
+    ReferenceGenomeJSONArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/ReferenceGenomeJSON'
+    ReferenceGenomeJSONAPI:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+          properties:
+            source:
+              type: string
+            genome_size_bp:
+              type: int
+            gc_percent:
+              type: float
+            num_contigs:
+              type: int
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              format: uri
+    ReferenceGenomeJSONAPIArray:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReferenceGenomeJSONAPI'
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              format: uri
+            first:
+              type: string
+              format: uri
+            last:
+              type: string
+              format: uri
+            prev:
+              type: string
+              format: uri
+            next:
+              type: string
+              format: uri
+    ServerErrorJSON:
+      type: object
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+    ServerErrorJSONArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/ServerErrorJSON'
+    ServerErrorJSONAPI:
+      type: object
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+    ServerErrorJSONAPIArray:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServerErrorJSONAPI'
+  requestBodies:
+    ReferenceGenome:
+      description: Reference genome object that needs to be added
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SequencingRunIlluminaJSON'
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/SequencingRunIlluminaJSONAPI'
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: oauth/authorize
+          scopes:
+            write:referencesequence: modify reference sequences
+            read:referencesequence: read reference sequences
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
