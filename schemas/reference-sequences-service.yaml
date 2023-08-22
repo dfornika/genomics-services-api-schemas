@@ -34,11 +34,24 @@ paths:
         - name: filter
           schema:
             type: string
+      responses: 
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReferenceGenomeJSONArray'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/ReferenceGenomeJSONAPIArray'
     post:
       tags:
         - reference-genomes
       summary: Add a new reference genome
       operationId: addReferenceGenome
+      responses:
+        '201':
+          description: Created
   /reference-genomes/{referenceGenomeId}:
     get:
       tags:
@@ -48,9 +61,37 @@ paths:
       operationId: getReferenceGenome
     delete:
       tags:
-        - sequencing-instruments
-      summary: Delete an illumina sequencing instrument
-      operationId: deleteSequencingInstrumentIllumina
+        - reference-genomes
+      summary: Delete a reference genome
+      operationId: deleteReferenceGenome
+  /reference-plasmids:
+    get:
+      tags:
+        - reference-plasmids
+    post:
+      tags:
+        - reference-plasmids
+  /reference-plasmids/{referencePlasmidId}:
+    get:
+      tags:
+        - reference-plasmids
+    delete:
+      tags:
+        - reference-plasmids
+  /reference-targeted-sequences:
+    get:
+      tags:
+        - targeted-sequences
+    post:
+      tags:
+        - targeted-sequences
+  /reference-targeted-sequences/{referenceTargetedSequenceId}:
+    get:
+      tags:
+        - targeted-sequences
+    delete:
+      tags:
+        - targeted-sequences
 components:
   schemas:
     ReferenceGenomeJSON:
@@ -74,12 +115,20 @@ components:
           properties:
             source:
               type: string
+            genus_name:
+              type: string
+            genus_taxonomy_id:
+              type: string
+            species_name:
+              type: string
+            species_taxonomy_id:
+              type: string
             genome_size_bp:
-              type: int
+              type: integer
             gc_percent:
-              type: float
+              type: number
             num_contigs:
-              type: int
+              type: integer
         links:
           type: object
           properties:
@@ -142,10 +191,10 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/SequencingRunIlluminaJSON'
+            $ref: '#/components/schemas/ReferenceGenomeJSON'
         application/vnd.api+json:
           schema:
-            $ref: '#/components/schemas/SequencingRunIlluminaJSONAPI'
+            $ref: '#/components/schemas/ReferenceGenomeJSONAPI'
   securitySchemes:
     oauth2:
       type: oauth2
@@ -153,8 +202,8 @@ components:
         implicit:
           authorizationUrl: oauth/authorize
           scopes:
-            write:referencesequence: modify reference sequences
-            read:referencesequence: read reference sequences
+            reference-sequences:read: read reference sequences
+            reference-sequences:write: modify reference sequences
     api_key:
       type: apiKey
       name: api_key
