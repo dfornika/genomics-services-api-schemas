@@ -1,0 +1,173 @@
+openapi: 3.1.0
+info:
+  title: Taxonomic Classification Service
+  description: |-
+    Provide info about taxonomic classification of genomes and sequences
+  contact:
+    email: dan.fornika@bccdc.ca
+  license:
+    name: GNU Affero General Public License v3.0
+    url: "https://www.gnu.org/licenses/agpl-3.0.txt"
+  version: 0.1.0
+tags:
+  - name: sequenced-library-taxonomic-abundances
+    description: Info about the relative abundances of reads derived from specific taxonomic groups
+paths:
+  /sequenced-library-taxonomic-abundances:
+    get:
+      tags:
+        - sequenced-library-taxonomic-abundances
+      summary: Get a list of taxonomic abundance estimates for sequenced libraries
+      description: Get a list of taxonomic abundance estimates for sequenced libraries
+      operationId: getSequencedLibraryTaxonomicAbundancesList
+      parameters:
+        - name: sort
+          schema:
+            type: string
+        - name: page
+          schema:
+            type: string
+        - name: filter
+          schema:
+            type: string
+      responses: 
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SequencedLibraryTaxonomicAbundanceJSONArray'
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/SequencedLibaryTaxonomicAbundanceJSONAPIArray'
+    post:
+      tags:
+        - sequenced-library-taxonomic-abundances
+      summary: Add a new taxonomic abundance estimate for a sequenced library
+      operationId: addSequencedLibraryTaxonomicAbundance
+      responses:
+        '201':
+          description: Created
+  /sequenced-library-taxonomic-abundances/{sequencedLibraryId}:
+    get:
+      tags:
+        - sequenced-library-taxonomic-abundances
+      summary: Get a list of taxonomic abundance estimates by sequenced library ID
+      description: Get a list of taxonomic abundance estimates by sequenced library ID
+      operationId: getTaxonomicAbundancesBySequencedLibraryId
+components:
+  schemas:
+    SequencedLibraryTaxonomicAbundancesJSON:
+      type: object
+      properties:
+        id:
+          type: string
+        sequenced_library_id:
+          type: string
+        taxonomic_classification_method_name:
+          type: string
+        taxonomic_classification_method_version:
+          type: string
+        taxonomic_classification_database_id:
+          type: string
+    SequencedLibraryTaxonomicAbundancesJSONArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/SequencedLibraryTaxonomicAbundancesJSON'
+    SequencedLibraryTaxonomicAbundancesJSONAPI:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        attributes:
+          type: object
+          properties:
+            sequenced_library_id:
+              type: string
+            taxonomic_classification_method_name:
+              type: string
+            taxonomic_classification_method_version:
+              type: string
+            taxonomic_classification_database_id:
+              type: string
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              format: uri
+    SequencedLibraryTaxonomicAbundancesJSONAPIArray:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SequencedLibraryTaxonomicAbundancesJSONAPI'
+        links:
+          type: object
+          properties:
+            self:
+              type: string
+              format: uri
+            first:
+              type: string
+              format: uri
+            last:
+              type: string
+              format: uri
+            prev:
+              type: string
+              format: uri
+            next:
+              type: string
+              format: uri
+    ServerErrorJSON:
+      type: object
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+    ServerErrorJSONArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/ServerErrorJSON'
+    ServerErrorJSONAPI:
+      type: object
+      properties:
+        code:
+          type: string
+        detail:
+          type: string
+    ServerErrorJSONAPIArray:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServerErrorJSONAPI'
+  requestBodies:
+    SequencedLibraryTaxonomicAbundances:
+      description: Taxonomic abundances for a sequenced library
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SequencedLibraryTaxonomicAbundancesJSON'
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/SequencedLibraryTaxonomicAbundancesJSONAPI'
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: oauth/authorize
+          scopes:
+            taxonomic-classification:read: read taxonomic classification info
+            taxonomic-classification:write: modify taxonomic classification info
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
