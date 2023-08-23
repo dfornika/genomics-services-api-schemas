@@ -13,9 +13,9 @@ tags:
   - name: reference-genomes
     description: Info about reference genomes
   - name: reference-plasmids
-    description: Info about reference sequences for targeted regions
-  - name: targeted-sequences
-    description: Info about sequenced libraries
+    description: 
+  - name: reference-targeted-locus-sequences
+    description: Info about reference sequences for targeted loci
 paths:
   /reference-genomes:
     get:
@@ -78,20 +78,20 @@ paths:
     delete:
       tags:
         - reference-plasmids
-  /reference-targeted-sequences:
+  /reference-targeted-locus-sequences:
     get:
       tags:
-        - targeted-sequences
+        - reference-targeted-locus-sequences
     post:
       tags:
-        - targeted-sequences
-  /reference-targeted-sequences/{referenceTargetedSequenceId}:
+        - reference-targeted-locus-sequences
+  /reference-targeted-locus-sequences/{referenceTargetedLocusSequenceId}:
     get:
       tags:
-        - targeted-sequences
+        - reference-targeted-locus-sequences
     delete:
       tags:
-        - targeted-sequences
+        - reference-targeted-locus-sequences
 components:
   schemas:
     ReferenceGenomeJSON:
@@ -99,6 +99,22 @@ components:
       properties:
         id:
           type: string
+        genus_name:
+          type: string
+        genus_taxonomy_id:
+          type: string
+        species_name:
+          type: string
+        species_taxonomy_id:
+          type: string
+        genome_size_bp:
+          type: integer
+        num_contigs:
+          type: integer
+        assembly_level:
+          type: string
+        gc_percent:
+          type: number
     ReferenceGenomeJSONArray:
       type: array
       items:
@@ -125,10 +141,12 @@ components:
               type: string
             genome_size_bp:
               type: integer
-            gc_percent:
-              type: number
             num_contigs:
               type: integer
+            assembly_level:
+              type: string
+            gc_percent:
+              type: number
         links:
           type: object
           properties:
