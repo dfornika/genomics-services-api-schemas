@@ -36,10 +36,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SequencedLibraryTaxonomicAbundanceJSONArray'
+                $ref: '#/components/schemas/SequencedLibraryTaxonomicAbundancesJSONArray'
             application/vnd.api+json:
               schema:
-                $ref: '#/components/schemas/SequencedLibaryTaxonomicAbundanceJSONAPIArray'
+                $ref: '#/components/schemas/SequencedLibraryTaxonomicAbundancesJSONAPIArray'
     post:
       tags:
         - sequenced-library-taxonomic-abundances
