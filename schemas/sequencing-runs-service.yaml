@@ -34,6 +34,13 @@ paths:
         - name: filter
           schema:
             type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SequencingInstrumentIlluminaJSONArray'
     post:
       tags:
         - sequencing-instruments
@@ -110,7 +117,7 @@ paths:
             type: string
       responses:
         '200':
-          description: Successful operation
+          description: OK
           content:
             application/json:
               schema:
@@ -287,10 +294,30 @@ paths:
                 type: array
 components:
   schemas:
+    SequencingInstrumentIlluminaJSON:
+      type: object
+      properties:
+        instrument_id:
+          type: string
+        type:
+          type: string
+        model:
+          type: string
+        status:
+          type: string
+        timestamp_status_updated:
+          type:
+            string
+          format:
+            date-time
+    SequencingInstrumentIlluminaJSONArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/SequencingInstrumentIlluminaJSON'
     SequencingRunIlluminaJSON:
       type: object
       properties:
-        id:
+        sequencing_run_id:
           type: string
         instrument_type:
           type: string
