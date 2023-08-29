@@ -26,13 +26,16 @@ paths:
       operationId: getSequencingInstrumentIlluminaList
       parameters:
         - name: sort
+          in: query
           schema: 
             type:
               string
         - name: page
+          in: query
           schema:
             type: string
         - name: filter
+          in: query
           schema:
             type: string
       responses:
@@ -313,9 +316,11 @@ paths:
       operationId: getSequencingRunNanoporeList
       parameters:
         - name: sort
+          in: query
           schema:
             type: string
         - name: page
+          in: query
           schema:
             type: string
       responses:
