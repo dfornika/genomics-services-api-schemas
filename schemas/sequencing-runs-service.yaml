@@ -54,11 +54,30 @@ paths:
       summary: Get an illumina sequencing instrument by ID
       description: Get an illumina sequencing instrument by ID
       operationId: getSequencingInstrumentIllumina
+      parameters:
+        - name: instrumentId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SequencingInstrumentIlluminaJSON'
     delete:
       tags:
         - sequencing-instruments
       summary: Delete an illumina sequencing instrument
       operationId: deleteSequencingInstrumentIllumina
+      parameters:
+        - name: instrumentId
+          in: path
+          required: true
+          schema:
+            type: string
   /sequencing-instruments/nanopore:
     get:
       tags:
@@ -91,11 +110,23 @@ paths:
       summary: Get a nanopore sequencing instrument by ID
       description: Get a nanopore sequencing instrument by ID
       operationId: getSequencingInstrumentNanopore
+      parameters:
+        - name: instrumentId
+          in: path
+          required: true
+          schema:
+            type: string
     delete:
       tags:
         - sequencing-instruments
       summary: Delete a nanopore sequencing instrument
       operationId: deleteSequencingInstrumentNanopore
+      parameters:
+        - name: instrumentId
+          in: path
+          required: true
+          schema:
+            type: string
   /sequencing-runs/illumina:
     get:
       tags:
@@ -174,6 +205,12 @@ paths:
         - sequencing-runs
       summary: Get an illumina sequencing run by ID
       operationId: getSequencingRunIlluminaById
+      parameters:
+        - name: sequencingRunId
+          in: path
+          required: true
+          schema:
+            type: string
       security:
         - oauth2:
             - read:sequencingrun
@@ -181,6 +218,12 @@ paths:
       tags:
         - sequencing-runs
       summary: Delete an illumina sequencing run
+      parameters:
+        - name: sequencingRunId
+          in: path
+          required: true
+          schema:
+            type: string
       security:
         - oauth2:
             - write:sequencingrun
@@ -190,6 +233,12 @@ paths:
       tags:
         - sequencing-runs
       summary: Get a list of demultiplexings for an illumina sequencing run
+      parameters:
+        - name: sequencingRunId
+          in: path
+          required: true
+          schema:
+            type: string
       security:
         - oauth2:
             - read:sequencingrun
@@ -197,6 +246,12 @@ paths:
       tags:
         - sequencing-runs
       summary: Add a demultiplexing to an illumina sequencing run
+      parameters:
+        - name: sequencingRunId
+          in: path
+          required: true
+          schema:
+            type: string
       security:
         - oauth2:
             - write:sequencingrun
@@ -206,6 +261,17 @@ paths:
       tags:
         - sequencing-runs
       summary: Get a demultiplexing of an illumina sequencing run
+      parameters:
+        - name: sequencingRunId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: demultiplexingId
+          in: path
+          required: true
+          schema:
+            type: string
       security:
         - oauth2:
             - read:sequencingrun
@@ -223,6 +289,17 @@ paths:
       tags:
         - sequencing-runs
       summary: Delete a demultiplexing of an illumina sequencing run
+      parameters:
+        - name: sequencingRunId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: demultiplexingId
+          in: path
+          required: true
+          schema:
+            type: string
       security:
         - oauth2:
             - write:sequencingrun
@@ -267,10 +344,22 @@ paths:
       tags:
         - sequencing-runs
       summary: Get a nanopore sequencing run by ID
+      parameters:
+        - name: sequencingRunId
+          in: path
+          required: true
+          schema:
+            type: string
     delete:
       tags:
         - sequencing-runs
       summary: Delete a nanopore sequencing run
+      parameters:
+        - name: sequencingRunId
+          in: path
+          required: true
+          schema:
+            type: string
   /sequenced-libraries:
     get:
       tags:
@@ -323,6 +412,34 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/SequencingInstrumentIlluminaJSON'
+    SequencingInstrumentNanoporeJSON:
+      type: object
+      properties:
+        instrument_id:
+          type: string
+        type:
+          oneOf:
+            - type: string
+            - type: 'null'
+        model:
+          oneOf:
+            - type: string
+            - type: 'null'
+        status:
+          oneOf:
+            - type: string
+            - type: 'null'
+        timestamp_status_updated:
+          oneOf:
+            - type:
+                string
+              format:
+                date-time
+            - type: 'null'
+    SequencingInstrumentNanoporeJSONArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/SequencingInstrumentNanoporeJSON'
     SequencingRunIlluminaJSON:
       type: object
       properties:
