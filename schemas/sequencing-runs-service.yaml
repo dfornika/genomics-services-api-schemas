@@ -26,8 +26,9 @@ paths:
       operationId: getSequencingInstrumentIlluminaList
       parameters:
         - name: sort
-          schema:
-            type: string
+          schema: 
+            type:
+              string
         - name: page
           schema:
             type: string
@@ -300,16 +301,24 @@ components:
         instrument_id:
           type: string
         type:
-          type: string
+          oneOf:
+            - type: string
+            - type: 'null'
         model:
-          type: string
+          oneOf:
+            - type: string
+            - type: 'null'
         status:
-          type: string
+          oneOf:
+            - type: string
+            - type: 'null'
         timestamp_status_updated:
-          type:
-            string
-          format:
-            date-time
+          oneOf:
+            - type:
+                string
+              format:
+                date-time
+            - type: 'null'
     SequencingInstrumentIlluminaJSONArray:
       type: array
       items:
