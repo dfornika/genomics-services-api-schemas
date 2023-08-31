@@ -50,6 +50,19 @@ paths:
         - sequencing-instruments
       summary: Add a new illumina sequencing instrument
       operationId: addSequencingInstrumentIllumina
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SequencingInstrumentIlluminaJSON'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: string
   /sequencing-instruments/illumina/{instrumentId}:
     get:
       tags:
@@ -87,6 +100,19 @@ paths:
           required: true
           schema:
             type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SequencingInstrumentIlluminaJSON'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: string
   /sequencing-instruments/nanopore:
     get:
       tags:
